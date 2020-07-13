@@ -79,7 +79,8 @@ def get_find(date, event='', db_filename='to_do.db'):
 
 def print_all(db_filename='todo_db.db'):
     """Функция распечатывает все события трекера в формате
-    date event, event, event"""
+    date event, event, event
+    Вывод date:  0000-00-00 (добавляются нули слева)"""
     with sqlite3.connect(db_filename) as conn:
         cursor = conn.cursor()
         # С помощью функции get_list_date() в цикле перебор таблиц
@@ -88,15 +89,22 @@ def print_all(db_filename='todo_db.db'):
             cursor.execute(sql)
             events_dirty = cursor.fetchall()  # Список с кортежами event
             events = list(map(lambda x: ', '.join(x), events_dirty))  # Список с events
-            print(date, ', '.join(events))
+            # print(date, ', '.join(events))
+            date = date.split('-')
+            year = str(date[0]).rjust(4, '0')
+            month = str(date[1]).rjust(2, '0')
+            day = str(date[2]).rjust(2, '0')
+            new_date = [year, month, day]
+            print('-'.join(new_date), ', '.join(events))
 
 
-add_to_db('2019-01-20', 'new balance')
-add_to_db('2019-01-20', 'new balance1')
-add_to_db('2019-01-20', 'new balance1')
-add_to_db('2019-01-21', 'new balance0')
-add_to_db('2019-01-21', 'new balance2')
-add_to_db('2019-01-21', 'new balance3')
-add_to_db('2019-01-21', 'new balance4')
-add_to_db('2019-01-22', 'new balance2')
+
+# add_to_db('2019-01-20', 'new balance')
+# add_to_db('2019-01-20', 'new balance1')
+# add_to_db('2019-01-20', 'new balance1')
+# add_to_db('2019-01-21', 'new balance0')
+# add_to_db('2019-1-21', 'new balance2')
+# add_to_db('2019-1-21', 'new balance3')
+# add_to_db('2019-1-21', 'new balance4')
+# add_to_db('19-01-02', 'new balance2')
 print_all()
